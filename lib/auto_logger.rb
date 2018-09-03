@@ -52,11 +52,16 @@ module AutoLogger
   end
 
   def _auto_logger_file
-    Rails.root.join("./log/#{_auto_logger_file_name}.log")
+    filename = ("./log/#{_auto_logger_file_name}.log")
+    if defined? Rails
+      Rails.root.join filename
+    else
+      filename
+    end
   end
 
   def _build_auto_logger
     ActiveSupport::Logger.new(_auto_logger_file).
-      tap { |logger| logger.formatter = Rails.env.test? ? Logger::Formatter.new : CustomFormatter.new }
+      tap { |logger| logger.formatter = !defined?(Rails) || Rails.env.test? ? Logger::Formatter.new : CustomFormatter.new }
   end
 end
