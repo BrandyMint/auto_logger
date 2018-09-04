@@ -56,7 +56,7 @@ module AutoLogger
       File.join(log_dir, file)
 
     elsif defined? Rails
-      Rails.root.join filename
+      Rails.root.join 'log', file
 
     else
       File.join(DEFAULT_LOG_DIR, file)
