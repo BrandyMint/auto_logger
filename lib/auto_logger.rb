@@ -1,4 +1,11 @@
+require 'logger'
+require 'active_support'
+require 'active_support/core_ext/string/inflections'
+require 'beautiful/log'
+
 require "auto_logger/version"
+require "auto_logger/formatter"
+require "auto_logger/named"
 
 # Миксин добавляет в класс метод `logger` который пишет лог
 # в файл с названием класса
@@ -19,20 +26,15 @@ require "auto_logger/version"
 
 
 module AutoLogger
-  SIMPLE_FORMATTER = proc do |severity, datetime, _progname, msg|
-    "#{severity.first} [#{datetime}] #{Thread.current[:request_id]}: #{msg}\n"
-  end
+  DEFAULT_LOG_DIR = './log'
 
-  class Named < Module
-    def self.new(name: nil)
-      Module.new do
-        include AutoLogger
-        define_method(:_auto_logger_file_name) { name }
-      end
-    end
-  end
+  mattr_accessor :log_dir
 
   private
+
+  def logger
+    @logger ||= _build_auto_logger
+  end
 
   # Логируем вместе с временем выполнения
   #
@@ -43,25 +45,30 @@ module AutoLogger
     res
   end
 
-  def logger
-    @logger ||= _build_auto_logger
-  end
-
   def _auto_logger_file_name
     self.class.to_s.underscore.gsub('/','_')
   end
 
   def _auto_logger_file
-    filename = ("./log/#{_auto_logger_file_name}.log")
-    if defined? Rails
+    file = "#{_auto_logger_file_name}.log"
+
+    if log_dir.present?
+      File.join(log_dir, file)
+
+    elsif defined? Rails
       Rails.root.join filename
+
     else
-      filename
+      File.join(DEFAULT_LOG_DIR, file)
     end
+  end
+
+  def _log_formatter
+    !defined?(Rails) || Rails.env.test? ? Logger::Formatter.new : Formatter.new
   end
 
   def _build_auto_logger
     ActiveSupport::Logger.new(_auto_logger_file).
-      tap { |logger| logger.formatter = !defined?(Rails) || Rails.env.test? ? Logger::Formatter.new : CustomFormatter.new }
+      tap { |logger| logger.formatter = _log_formatter }
   end
 end

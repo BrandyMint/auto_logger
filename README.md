@@ -1,8 +1,11 @@
 # AutoLogger
+[![Build
+Status](https://travis-ci.org/BrandyMint/moysklad.svg)](https://travis-ci.org/dapi/moysklad)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/auto_logger`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Упрощяет подключение уникальных логгеров для модулей и классов. После
+подключения в модуль или класс через `include AutoLogger` добавляет метод
+`logger` который пишет логи в файл автоматически сформированные из измени
+модуля/класса в каталог `./log`
 
 ## Installation
 
@@ -22,7 +25,26 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+module SomeService
+  include AutoLogger
+
+  def perform
+    logger.info 'some' # writes info into ./logs/some_service.log
+  end
+end
+```
+
+Иногда необходимо насильно указать имя файла для лога. Например при подключении
+в модули/класс без имени, в частности в grape-контролерах:
+
+```
+class PublicAPI::OrdersAPI < Grape::API
+  helpers do
+    include AutoLogger::Named.new(name: :orders_api)
+  end
+end
+```
 
 ## Development
 
