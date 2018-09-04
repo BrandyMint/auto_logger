@@ -1,6 +1,6 @@
 # AutoLogger
-[![Build
-Status](https://travis-ci.org/BrandyMint/auto_logger.svg)](https://travis-ci.org/BrandyMint/auto_logger)
+
+[![Build Status](https://travis-ci.org/BrandyMint/auto_logger.svg)](https://travis-ci.org/BrandyMint/auto_logger)
 
 Упрощяет подключение уникальных логгеров для модулей и классов. После
 подключения в модуль или класс через `include AutoLogger` добавляет метод
