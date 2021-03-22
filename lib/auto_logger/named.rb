@@ -3,7 +3,7 @@ module AutoLogger
     def self.new(name: nil)
       Module.new do
         include AutoLogger
-        define_method(:_auto_logger_file_name) { name }
+        define_method(:_auto_logger_tag) { name }
       end
     end
   end

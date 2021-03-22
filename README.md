@@ -25,6 +25,8 @@ Or install it yourself as:
 
 ## Usage
 
+### Instance usage
+
 ```
 class SomeService
   include AutoLogger
@@ -34,6 +36,9 @@ class SomeService
   end
 end
 ```
+
+
+### Grape example
 
 Иногда необходимо насильно указать имя файла для лога. Например при подключении
 в модули/класс без имени, в частности в grape-контролерах:
@@ -46,7 +51,7 @@ class PublicAPI::OrdersAPI < Grape::API
 end
 ```
 
-Usage in module context:
+## Usage in module context
 
 ```
 module Custom
@@ -60,7 +65,7 @@ end
 Custom.logger.info "Do.."
 ```
 
-Setup custom logger:
+## Setup custom logger
 
 ```
 AutoLogger.logger_builder = -> (tag, default_formatter) {
