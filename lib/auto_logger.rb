@@ -30,11 +30,11 @@ module AutoLogger
 
   mattr_accessor :log_dir
 
-  private
-
   def logger
     @logger ||= _build_auto_logger
   end
+
+  private
 
   # Логируем вместе с временем выполнения
   #
