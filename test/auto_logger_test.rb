@@ -10,9 +10,11 @@ class AutoLoggerTest < Minitest::Test
 
   def test_it_writes_to_log_from_instance
     assert logger.info 'test'
+    assert _auto_logger_file_name, 'auto_logger_test'
   end
 
   def test_it_writes_to_log_module
     assert AutoLoggerTest.logger.info 'test'
+    assert AutoLoggerTest.send(:_auto_logger_file_name), 'auto_logger_test'
   end
 end

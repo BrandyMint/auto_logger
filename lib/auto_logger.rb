@@ -28,7 +28,7 @@ require "auto_logger/named"
 module AutoLogger
   DEFAULT_LOG_DIR = './log'
 
-  mattr_accessor :log_dir
+  mattr_accessor :log_dir, :log_formatter, :logger_builder
 
   def logger
     @logger ||= _build_auto_logger
@@ -46,7 +46,7 @@ module AutoLogger
   end
 
   def _auto_logger_file_name
-    self.class.to_s.underscore.gsub('/','_')
+    (self.class == Class ?  self.name : self.class.name).underscore.gsub('/','_')
   end
 
   def _auto_logger_file
@@ -64,7 +64,7 @@ module AutoLogger
   end
 
   def _log_formatter
-    !defined?(Rails) || Rails.env.test? ? Logger::Formatter.new : Formatter.new
+    @log_formatter || !defined?(Rails) || Rails.env.test? ? Logger::Formatter.new : Formatter.new
   end
 
   def _build_auto_logger
