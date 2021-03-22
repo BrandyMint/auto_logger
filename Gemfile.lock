@@ -1,31 +1,32 @@
 PATH
   remote: .
   specs:
-    auto_logger (0.1.4)
+    auto_logger (0.1.5)
       activesupport
       beautiful-log
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.2.2)
+    activesupport (6.1.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (>= 0.7, < 2)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+      zeitwerk (~> 2.3)
     awesome_print (1.8.0)
     beautiful-log (0.2.2)
       awesome_print (~> 1.8.0)
       colorize (~> 0.8.1)
     colorize (0.8.1)
-    concurrent-ruby (1.1.3)
-    i18n (1.1.1)
+    concurrent-ruby (1.1.8)
+    i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     minitest (5.11.3)
     rake (10.5.0)
-    thread_safe (0.3.6)
-    tzinfo (1.2.5)
-      thread_safe (~> 0.1)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
+    zeitwerk (2.4.2)
 
 PLATFORMS
   ruby
@@ -37,4 +38,4 @@ DEPENDENCIES
   rake (~> 10.0)
 
 BUNDLED WITH
-   1.17.0
+   1.17.2
