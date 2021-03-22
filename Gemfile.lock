@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    auto_logger (0.1.6)
+    auto_logger (0.1.7)
       activesupport
       beautiful-log
 
