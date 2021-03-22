@@ -28,10 +28,10 @@ require "auto_logger/named"
 module AutoLogger
   DEFAULT_LOG_DIR = './log'
 
-  mattr_accessor :log_dir, :log_formatter, :logger_builder
+  mattr_accessor :log_dir, :log_formatter, :logger_builder, :_cached_logger
 
   def logger
-    @logger ||= _build_auto_logger
+    _cached_logger ||= _build_auto_logger
   end
 
   private
@@ -45,12 +45,12 @@ module AutoLogger
     res
   end
 
-  def _auto_logger_file_name
-    (self.class == Class ?  self.name : self.class.name).underscore.gsub('/','_')
+  def _auto_logger_tag
+    ([Class, Module].include?(self.class) ? self.name : self.class.name).underscore.gsub('/','_')
   end
 
   def _auto_logger_file
-    file = "#{_auto_logger_file_name}.log"
+    file = "#{_auto_logger_tag}.log"
 
     if log_dir.present?
       File.join(log_dir, file)
@@ -68,7 +68,11 @@ module AutoLogger
   end
 
   def _build_auto_logger
-    ActiveSupport::Logger.new(_auto_logger_file).
-      tap { |logger| logger.formatter = _log_formatter }
+    if logger_builder.nil?
+      ActiveSupport::Logger.new(_auto_logger_file).
+        tap { |logger| logger.formatter = _log_formatter }
+    else
+      logger_builder.call(_auto_logger_tag, _log_formatter)
+    end
   end
 end

@@ -26,7 +26,7 @@ Or install it yourself as:
 ## Usage
 
 ```
-module SomeService
+class SomeService
   include AutoLogger
 
   def perform
@@ -44,6 +44,30 @@ class PublicAPI::OrdersAPI < Grape::API
     include AutoLogger::Named.new(name: :orders_api)
   end
 end
+```
+
+Usage in module context:
+
+```
+module Custom
+  extend AutoLogger
+
+  def self.perform
+     logger.info "Do..."
+  end
+end
+
+Custom.logger.info "Do.."
+```
+
+Setup custom logger:
+
+```
+AutoLogger.logger_builder = -> (tag, default_formatter) {
+  ActiveSupport::TaggedLogging
+    .new(LogStashLogger.new(type: :stdout))
+    .tagged(tag)
+}
 ```
 
 ## Development
