@@ -75,6 +75,23 @@ AutoLogger.logger_builder = -> (tag, default_formatter) {
 }
 ```
 
+## Collapse all logs to one (useful for development)
+
+```
+if ENV['COLLAPSE_AUTO_LOGGER'].present?
+  if ENV['COLLAPSE_AUTO_LOGGER'] == 'STDOUT'
+    logger = Logger.new(STDOUT)
+  else
+    logger = Rails.logger
+  end
+  AutoLogger.logger_builder = -> (tag, default_formatter) {
+    ActiveSupport::TaggedLogging
+      .new(logger)
+      .tagged(tag)
+  }
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
